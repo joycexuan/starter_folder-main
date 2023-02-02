@@ -1,7 +1,7 @@
 ---
 title: "neighbourhood_assault_rates"
 author: "Joyce Xuan"
-abstract: xxxx
+abstract: 
 format: pdf
 editor: visual
 number-sections: true 
@@ -21,17 +21,27 @@ library(janitor)
 library(knitr)
 ```
 
-lajhdjlkhfjadlshfskadjhfaksdhwadfasdk (\@assaultgraphs)
+
 
 ```{r}
 #| label: fig-assaultgraphs
 #| fig-cap: "Five Neighbourhoods With Highest Assault Rates 2020 & 2021"
 
 library(tidyverse)
-filter_assaults <- read.csv("~/Desktop/starter_folder-main/inputs/data/cleaned_assault_data.csv")
+assaults <- read.csv("~/Desktop/starter_folder-main/inputs/data/cleaned_assault_data.csv")
 
-ggplot(filter_assaults, aes(x = Neighbourhood, y=Assault_Number, fill=Assault_Year)) + geom_bar (stat="identity", position="dodge") + theme(axis.text.x = element_text(angle = 45, vjust = 0.8, hjust = 0.8))
+assaults <- assaults |>
+  mutate(
+    Assault_Year =
+      recode(
+        Assault_Year,
+        "2020" = "2020",
+        "2021" = "2021"
+      )
+  )
 
-##labs(x="Neighbourhood", y="Assault Number", title="Five Neighbourhoods With Highest Assault Rates 2020 & 2021")
+ggplot(assaults, aes(x = Neighbourhood, y=Assault_Number, fill=Assault_Year)) + geom_bar (stat="identity", position="dodge") + theme(axis.text.x = element_text(angle = 45, vjust = 0.8, hjust = 0.8))
+
+ ##labs(x="Neighbourhood", y="Assault Number", title="Five Neighbourhoods With Highest Assault Rates 2020 & 2021")
 
 ```
