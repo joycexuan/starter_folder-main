@@ -1,0 +1,37 @@
+---
+title: "neighbourhood_assault_rates"
+author: "Joyce Xuan"
+abstract: xxxx
+format: pdf
+editor: visual
+number-sections: true 
+references: references.bib
+
+execute: 
+  echo: false
+  warning: false
+  message: false 
+---
+
+```{r}
+library(opendatatoronto)
+library(dplyr)
+library(tidyverse)
+library(janitor)
+library(knitr)
+```
+
+lajhdjlkhfjadlshfskadjhfaksdhfasdk (\@assaultgraphs)
+
+```{r}
+#| label: fig-assaultgraphs
+#| fig-cap: "Five Neighbourhoods With Highest Assault Rates 2020 & 2021"
+
+library(tidyverse)
+filter_assaults <- read.csv("~/Desktop/starter_folder-main/inputs/data/cleaned_assault_data.csv")
+
+ggplot(filter_assaults, aes(x = Neighbourhood, y=Assault_Number, fill=Assault_Year)) + geom_bar (stat="identity", position="dodge") + theme(axis.text.x = element_text(angle = 45, vjust = 0.8, hjust = 0.8))
+
+##labs(x="Neighbourhood", y="Assault Number", title="Five Neighbourhoods With Highest Assault Rates 2020 & 2021")
+
+```
