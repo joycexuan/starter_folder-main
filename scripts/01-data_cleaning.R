@@ -53,3 +53,24 @@ ggplot(filter_assaults, aes(x = Neighbourhood,
 
 write.csv(filter_assaults, "~/Desktop/starter_folder-main/inputs/data/cleaned_assault_data.csv", row.names=FALSE)
 
+##selecting Church-Yonge neighbourhood, 2014-2021 assault amounts 
+churchy <- assault_data |> filter(X_id == 23) |> select(Assault_2014, Assault_2015, Assault_2016, Assault_2017, Assault_2018, Assault_2019, Assault_2020, Assault_2021)
+
+years <- c(2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021)
+
+churchassaults <- c(537, 551, 594, 749, 809, 909, 767, 966)
+
+churchy <- data.frame(years, churchassaults)
+
+#linegraph with Church-Yonge neighbourhood 2014-2021 assaults
+ggplot(churchy, aes(x= years)) + 
+  geom_line(aes(y = churchassaults), color = "darkred")
+
+#Saving churchy to inputs
+write.csv(churchy, "~/Desktop/starter_folder-main/inputs/data/churchdata.csv", row.names = FALSE)
+
+
+
+
+
+

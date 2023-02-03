@@ -1,11 +1,13 @@
 ---
-title: "neighbourhood_assault_rates"
+title: "Toronto Neighbourhoods With Highest Assault Rates in 2020 and 2021^[Code and data available at: https://github.com/joycexuan/starter_folder-main]"
 author: "Joyce Xuan"
-abstract: 
+date: "2 February 2023" 
+date-format: long
+abstract: "This paper looks at the five Toronto neighbourhoods with the highest crime rates in 2020 and 2021.xxxx"
 format: pdf
 editor: visual
 number-sections: true 
-references: references.bib
+bibliography: references.bib
 
 execute: 
   echo: false
@@ -21,7 +23,13 @@ library(janitor)
 library(knitr)
 ```
 
+## Introduction
 
+## Data
+
+### Source and Data Collection
+
+### Looking at the Data
 
 ```{r}
 #| label: fig-assaultgraphs
@@ -39,9 +47,37 @@ assaults <- assaults |>
         "2021" = "2021"
       )
   )
-
-ggplot(assaults, aes(x = Neighbourhood, y=Assault_Number, fill=Assault_Year)) + geom_bar (stat="identity", position="dodge") + theme(axis.text.x = element_text(angle = 45, vjust = 0.8, hjust = 0.8))
-
- ##labs(x="Neighbourhood", y="Assault Number", title="Five Neighbourhoods With Highest Assault Rates 2020 & 2021")
+#bargraph with top five assault rate neighbourhoods in 2020 and 2021
+ggplot(assaults, aes(x = Neighbourhood, y=Assault_Number, fill=Assault_Year)) +    geom_bar (stat="identity", position="dodge") + theme(axis.text.x = element_text(angle = 45, vjust = 0.8, hjust = 0.8)) +
+    labs(x="Neighbourhood", y="Assault Number", title="Five Neighbourhoods With Highest Assault Rates 2020 & 2021")
 
 ```
+
+## Discussion
+
+
+```{r}
+#| label: fig-churchyongeassaults
+#| fig-cap: "Church-Yonge Neighbourhood Assault rates 2014-2021"
+
+library(tidyverse)
+churchy <- read.csv("~/Desktop/starter_folder-main/inputs/data/churchdata.csv")
+
+years <- c(2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021)
+
+churchassaults <- c(537, 551, 594, 749, 809, 909, 767, 966)
+
+churchy <- data.frame(years, churchassaults)
+
+#linegraph with Church-Yonge Neighbourhood 2014-2021 assaults
+ggplot(churchy, aes(x= years)) + 
+  geom_line(aes(y = churchassaults), color = "darkred") +
+  labs(x="Year", y="Church-Yonge Assaults", title="Church-Yonge Neighbourhood Assault Rates 2014-2021")
+
+```
+
+
+
+\newpage
+
+## References
