@@ -1,11 +1,11 @@
-"Neighbourhood","Assault_Year","Assault_Number"
-"Church-Yonge Corridor","2020",767
-"Church-Yonge Corridor","2021",966
-"Waterfront-Island","2020",766
-"Waterfront-Island","2021",971
-"Kensington-Chinatown","2020",429
-"Kensington-Chinatown","2021",405
-"Bay Street Corridor","2020",516
-"Bay Street Corridor","2021",499
-"Moss Park","2020",756
-"Moss Park","2021",630
+Neighbourhood,Assault_Year,Assault_Number
+Church-Yonge Corridor,2020,767
+Church-Yonge Corridor,2021,966
+Waterfront-Island,2020,766
+Waterfront-Island,2021,971
+Kensington-Chinatown,2020,429
+Kensington-Chinatown,2021,405
+Bay Street Corridor,2020,516
+Bay Street Corridor,2021,499
+Moss Park,2020,756
+Moss Park,2021,630

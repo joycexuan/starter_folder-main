@@ -16,6 +16,6 @@ assault_data <- filter(datastore_resources, row_number()==1) %>% get_resource()
 assault_data
 
 #save data set 
-write.csv(assault_data, "~/Desktop/starter_folder-main/inputs/data/rawdata.csv", row.names = FALSE)
+write_csv(assault_data, "~/Desktop/starter_folder-main/inputs/data/rawdata.csv")
 
 

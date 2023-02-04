@@ -3,7 +3,7 @@ title: "Toronto Neighbourhoods With Highest Assault Rates in 2020 and 2021^[Code
 author: "Joyce Xuan"
 date: "2 February 2023" 
 date-format: long
-abstract: "This paper looks at the five Toronto neighbourhoods with the highest crime rates in 2020 and 2021.xxxx"
+abstract: "Neighbour Crime Rate Data from the City of Toronto Open Data Portal was utilized to examine the number of assaults in Greater Toronto Area neighbourhoods. Although the overall assault rate has increased from 2014 to 2021, it was found that the five Toronto neighbourhoods with the highest number of assaults over the past two years, 2020 and 2021, are all situated in Downtown Toronto. A comparison was made between these five neighbourhoods's number of assaults in 2020 and 2021, and a further examination into the Church-Yonge neighbourhood was conducted. This data could lead to a better understanding of how assault is related to the COVID-19 Pandemic, and enable the City of Toronto to recognize where to increace police surveillance and safety measures."
 format: pdf
 editor: visual
 number-sections: true 
@@ -16,27 +16,52 @@ execute:
 ---
 
 ```{r}
+####Workplace Setup####
 library(opendatatoronto)
 library(dplyr)
 library(tidyverse)
 library(janitor)
 library(knitr)
+library(ggplot2)
 ```
 
 ## Introduction
+
+The number of assaults in the City of Toronto has increased significantly throughout the recent years. Downtown Toronto, in particular, witnesses a high number of these crimes. The Neighbourhood Crime Rates data from the Open Data Toronto portal provides a comprehensive dataset of different crimes committed in the 140 Toronto neighbourhoods from 2014 to 2019. This data set is important as it provides crucial information on the safety of our neighbourhoods and the trend of crimes throughout the years. However, it is too vast and makes it difficult to compare specific crimes and years. Assault, for example, is most common neighbourhood crime in this dataset. Defined as the act or intention to apply for force to another person without consent, directly or indirectly, assault is highly reported and observed in Toronto neighbourhoods and causes serious concerns for safety [@assaults].This paper is interested in comparing the number of assaults in Toronto neighbourhoods, explore where in Toronto it is most common throughout the past two years during COVID-19, which is where the city can increase measures of safety such as police surveillance to prevent the numbers from continuing to rise. 
+
 
 ## Data
 
 ### Source and Data Collection
 
+This paper utilizes data on Neighbourhood Crime Rates in Toronto obtained in csv formate from the Open Data Toronto portal using the R Package **opendatatoronto** [@opendatatoronto]. The data is collected and published by the Toronto Police Services, and was last updated on 5 May 2022. The raw data consists of the 140 neighbourhoods in the Greater Toronto Area, the total population of each neighbourhood as of 2021, and the number of crimes commited grouped by type of data and the year (ex. Assault_2014). The different types of crime in the dataset include assault, auto theft, break and enter, robbery, theft over, homicide, shootings, and theft from motor vehicle.  The reported The analysis of this paper uses the R statistical programming language [@citeR] and primarily use the **dplyr** [@dplyr], **tidyverse** [@tidyverse], and **janitor** [@janitor] packages. Graphs for visualization purposes will be creates using **ggplot2** [@ggplot2] and the table will be created using **knitr** [@knitr]. 
+
 ### Looking at the Data
+
+I chose to focus on the five Toronto neighbourhoods with the highest number of assault, which are Waterfront-Island, Church-Yonge Corridor, Moss Park, Bay Street Corridor, and Kensington Chinatown. Immediately, I noticed that all five neighbourhoods are situated either near or within the Downtown Toronto core. From this, specifically, I am interested in the difference in assault numbers in the most recent two years, from 2020 to 2021. After determining which columns that I want to utilize for my analysis, I cleaned the raw 'assault_data' and kept the 'HoodName', 'Assault_2020', and 'Assault_2021' columns. I pivoted the dataset so that it would be more easily graphable, and made columns 'assault_year" and 'assault_amt', then renamed 'assault_year' to 'Assault_Year' and 'assault_amt' to 'Assault_Number' to make them more clearly comprehensable. Thus, I had 'HoodName', 'Assault_Year', and 'Assault_Number' as the columns of my new, cleaned dataset as the foundation of my table and graphs. 
+
+Using **knitr**, I created @tbl-1, which shows a comparison of the 2020 and 2021 assault numbers in the top five Toronto heighbourhood, in no particular order [@knitr]. As certain neighbourhoods have similar numbers of assaults, a table allows for a clearer comparison that enables us to better understand the number of assaults in 2020 and 2021. 
+
+```{r}
+#| label: tbl-1
+#| tbl-cap: "2020-2021 Top Toronto Neighbourhood Number of Assaults "
+
+#making a table with 2020 and 2021 assault numbers in top five Toronto neighbourhoods
+
+assaults <- read_csv("~/Desktop/starter_folder-main/inputs/data/final_assault_data.csv")
+knitr::kable(assaults)
+
+
+```
+
+As seen in @fig-assaultgraphs, for better visualization, I used **ggplot2** to create a bar graph showing a side-by-side comparison of the number of assaults in each of the five Toronto neighbourhoods in 2020 and 2021. In my data cleaning, I also shortened the neighbourhood 'Waterfront Communities-The Island' to "Waterfront-Island' to make the labeling more concise.  
 
 ```{r}
 #| label: fig-assaultgraphs
-#| fig-cap: "Five Neighbourhoods With Highest Assault Rates 2020 & 2021"
+#| fig-cap: "Toronto Neighbourhoods With Highest Number of Assaults 2020 & 2021"
 
 library(tidyverse)
-assaults <- read.csv("~/Desktop/starter_folder-main/inputs/data/cleaned_assault_data.csv")
+assaults <- read_csv("~/Desktop/starter_folder-main/inputs/data/cleaned_assault_data.csv")
 
 assaults <- assaults |>
   mutate(
@@ -47,37 +72,44 @@ assaults <- assaults |>
         "2021" = "2021"
       )
   )
-#bargraph with top five assault rate neighbourhoods in 2020 and 2021
+#bargraph with top five highest assault neighbourhoods in 2020 and 2021
 ggplot(assaults, aes(x = Neighbourhood, y=Assault_Number, fill=Assault_Year)) +    geom_bar (stat="identity", position="dodge") + theme(axis.text.x = element_text(angle = 45, vjust = 0.8, hjust = 0.8)) +
-    labs(x="Neighbourhood", y="Assault Number", title="Five Neighbourhoods With Highest Assault Rates 2020 & 2021")
+    labs(x="Neighbourhood", y="Assault Number", title="Top Five Neighbourhoods With Highest Number of Assault 2020 & 2021")
 
 ```
 
-## Discussion
+Through @fig-assaultgraphs, it is evident that number of assault decreased after the emergence of COVID-19 from 2020 to 2021 in the Moss Park, as well as the Bay Street Corridor and Kensington-Chinatown neighbourhoods, although not a significantly. Assault numbers increased in the Church-Yonge Corridor and Waterfront Communities-The Island neighbourhoods significantly. While this may be due to fluctuations in population density in these neighbourhoods, the last complete census of population in each Toronto neighbourhood was updated by Statistics Canada in 2016, so it was difficult to draw conclusions based on this. This may be due to the fact that the Church-Yonge Corridor and Waterfront Communities-The Island neighbourhoods are densely residential, the population may have decreased in 2020 due to operations such as schools and businesses closing after COVID-19 restrictions. High numbers of residents moved away due to lowered demand in these neighbourhood. But, as the neighbourhoods started to re-open in 2021, they experienced an increase in population and hence, an increase in number of assaults. However, the Bay Street Corridor, for example, which had decreased number of assaults, consists of Toronto's Financial and Discovery districts. These districts are home to many of Toronto's corporate offices. As the pandemic evolved, many of these corporate businesses shifted to remote work, which resulted in lowered capacity of the offices in this neighbourhood, which can be inferred to cause a lowered population. Similar assumptions can be made for the Kensington-Chinatown neighbourhood, which is home to many small, local businesses that would have been impacted by the pandemic, and the Moss Park neighbourhood, which also has high amounts of small businesses and homeless shelters [@torontoneighbourhoods].It is also interesting to observe that all five Toronto neighbourhoods with the highest number of assaults are situated in Downtown Toronto. 
 
+
+Moreover, I observed that the Church-Yonge Corridor neighbourhood had the second highest overall number of assaults in 2020 and 2021. As this is the neighbourhood where many university students in Toronto, including myself, reside, I wanted to examine how the number of assaults in the Church-Yonge Corridor has progressed over the years. 
+
+After cleaning the data for Church-Yonge Corridor number of assaults, I created a line graph as seen in @fig-churchyongeassaults to visualize the trend of number of assaults in the Church-Yonge Corridor from 2014 to 2021. 
 
 ```{r}
 #| label: fig-churchyongeassaults
-#| fig-cap: "Church-Yonge Neighbourhood Assault rates 2014-2021"
+#| fig-cap: "Church-Yonge Neighbourhood Assault Numbers 2014-2021"
 
 library(tidyverse)
-churchy <- read.csv("~/Desktop/starter_folder-main/inputs/data/churchdata.csv")
+churchy <- read_csv("~/Desktop/starter_folder-main/inputs/data/churchdata.csv")
 
-years <- c(2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021)
 
-churchassaults <- c(537, 551, 594, 749, 809, 909, 767, 966)
-
-churchy <- data.frame(years, churchassaults)
-
-#linegraph with Church-Yonge Neighbourhood 2014-2021 assaults
+#line graph with Church-Yonge neighbourhood 2014-2021 assaults
 ggplot(churchy, aes(x= years)) + 
-  geom_line(aes(y = churchassaults), color = "darkred") +
-  labs(x="Year", y="Church-Yonge Assaults", title="Church-Yonge Neighbourhood Assault Rates 2014-2021")
+  geom_line(aes(y = assaults), color = "darkred") +
+  scale_x_continuous(breaks = churchy$years) +
+  labs(x="Year", y="Assaults", title="Number of Assaults in Church-Yonge Neighbourhood")
+
 
 ```
 
+It can be observed from @fig-churchyongeassaults that the number of assaults in the Church-Yonge neighbourhood has noticeably increased from 2014 to 2021. In 2020, when the COVID-19 pandemic was highly impacting all Toronto neighbourhoods, we can see that there was a significant drop in the number of assaults. This could be due to the lockdown that prevented the majority of the population from leaving their homes, decreasing the opportunities for assaults to occur. However, as the pandemic easened in 2021, numbers increased again, showing that the decrease was not due to an improvement of safety measures or police surveillance.  
+
+## Conclusion
+
+In conclusion, it can be observed that numbers of assaults in the Moss Park, Bay Street Corridor, and Kensington-Chinatown neighbourhoods have decreased in the past two years, while number of assaults have increased in the Church-Yonge Corridor and Waterfront Communities-The Island neighbourhoods. However, because the decrease in Bay Street Corridor and Kensington-Chinatown was not a significant amount, Downtown Toronto neighbourhoods are still highly vulnerable to assaults and should remain wary of potential rises in assault numbers. The data provided by the Toronto Police Services does not provide the number of residents living in each neighbourhood each year, making it difficult to analyze how population density and mobility may have impacted the number of assaults. Regardless, the analysis of this dataset could enable the City of Toronto to take notice of the amount of neighbourhood assaults and put more importance on implement safety measures to protect the wellbeing of our neighbourhoods.  
 
 
 \newpage
+
 
 ## References
